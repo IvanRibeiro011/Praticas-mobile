@@ -1,5 +1,6 @@
 package com.weatherapp.ui
 
+import android.content.Context
 import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -45,17 +46,15 @@ fun CityItem(
     ) {
         Icon(
             Icons.Rounded.FavoriteBorder,
-            contentDescription = ""
+            contentDescription = null
         )
         Spacer(modifier = Modifier.size(12.dp))
         Column(modifier = modifier.weight(1f)) {
             Text(
-                modifier = Modifier,
                 text = city.name,
                 fontSize = 24.sp
             )
             Text(
-                modifier = Modifier,
                 text = city.weather,
                 fontSize = 16.sp
             )
@@ -66,15 +65,13 @@ fun CityItem(
     }
 }
 
-@Preview
 @Composable
 fun ListPage(
     modifier: Modifier = Modifier,
-    viewModel: MainViewModel
+    viewModel: MainViewModel,
+    context: Context
 ) {
-
-    val cityList = remember { viewModel.cities }
-    val context = LocalContext.current
+    val cityList = viewModel.cities
 
     LazyColumn(
         modifier = modifier
