@@ -1,5 +1,6 @@
 package com.weatherapp.ui
 
+import android.Manifest
 import android.content.Context
 import android.content.pm.PackageManager
 import androidx.compose.foundation.layout.Column
@@ -15,6 +16,8 @@ import androidx.core.content.ContextCompat
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.GoogleMap
+import com.google.maps.android.compose.MapProperties
+import com.google.maps.android.compose.MapUiSettings
 import com.google.maps.android.compose.Marker
 import com.google.maps.android.compose.MarkerState
 import com.google.maps.android.compose.rememberCameraPositionState
@@ -31,13 +34,23 @@ fun MapPage(
             .fillMaxSize()
             .wrapContentSize(Alignment.Center)
     ) {}
-    val camPosState = rememberCameraPositionState ()
-
+    val camPosState = rememberCameraPositionState()
+    val hasLocationPermission by remember {
+        mutableStateOf(
+            ContextCompat.checkSelfPermission(
+                context,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED
+        )
+    }
     GoogleMap(
         modifier = modifier.fillMaxSize(),
-        onMapClick = { viewModel.add("Nova cidade", location = it)
+        onMapClick = {
+            viewModel.add("Nova cidade", location = it)
         },
-        cameraPositionState = camPosState
+        cameraPositionState = camPosState,
+        properties = MapProperties(isMyLocationEnabled = hasLocationPermission),
+        uiSettings = MapUiSettings(myLocationButtonEnabled = true)
     ) {
         viewModel.cities.forEach {
             if (it.location != null) {
