@@ -1,8 +1,11 @@
 package com.weatherapp.ui
 
 import android.content.Context
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
@@ -17,14 +20,18 @@ fun MapPage(
     viewModel: MainViewModel,
     context: Context
 ) {
-    val recife = LatLng(-8.05, -34.9)
-    val caruaru = LatLng(-8.27, -35.98)
-    val joaopessoa = LatLng(-7.12, -34.84)
-
+    Column (
+        modifier = Modifier
+            .fillMaxSize()
+            .wrapContentSize(Alignment.Center)
+    ) {}
     GoogleMap(
         modifier = modifier.fillMaxSize(),
         onMapClick = { viewModel.add("Nova cidade", location = it) }
     ) {
+        val recife = LatLng(-8.05, -34.9)
+        val caruaru = LatLng(-8.27, -35.98)
+        val joaopessoa = LatLng(-7.12, -34.84)
         viewModel.cities.forEach {
             if (it.location != null) {
                 Marker(
